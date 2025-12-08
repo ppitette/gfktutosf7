@@ -9,15 +9,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class RecipeController extends AbstractController
 {
-    #[Route('/recette/{slug}-{id}', name: 'recipe.index')]
+    #[Route('/recettes', name: 'recipe.index')]
     public function index(Request $request): Response
     {
-        return new Response('Recettes');
+        return $this->render('recipe/index.html.twig');
     }
 
-    #[Route('/recette/{slug}-{id}', name: 'recipe.show', requirements:['slug' => '[a-z0-9-]+', 'id' => '\d+'])]
+    #[Route('/recettes/{slug}-{id}', name: 'recipe.show', requirements:['slug' => '[a-z0-9-]+', 'id' => '\d+'])]
     public function show(Request $request, string $slug, int $id): Response
     {
-        return new Response('Recette : ' . $slug);
+        return $this->render('recipe/show.html.twig', [
+            'slug' => $slug,
+            'id' => $id,
+        ]);
     }
 }
+
+// https://127.0.0.1:8000/recette/pate-bolognaise-32
