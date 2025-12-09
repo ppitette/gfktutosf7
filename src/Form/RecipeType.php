@@ -11,6 +11,7 @@ use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -19,11 +20,21 @@ class RecipeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('slug', TextType::class, [
-                'require' => false,
+            ->add('title', TextType::class, [
+                'empty_data' => '',
             ])
-            ->add('content')
+            ->add('slug', TextType::class, [
+                'required' => false,
+                // 'constraints' => [
+                //     new Sequentially([
+                //         new Length(min: 10),
+                //     new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Ce slug est invalide')
+                //     ])
+                // ],
+            ])
+            ->add('content', TextareaType::class, [
+                'empty_data' => '',
+            ])
             ->add('duration')
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer'
