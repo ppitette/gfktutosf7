@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
+use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,11 +16,9 @@ final class RecipeController extends AbstractController
     #[Route('/recettes', name: 'recipe.index')]
     public function index(Request $request, RecipeRepository $repository): Response
     {
-        // $recipes = $repository->findAll();
+        $recipes = $repository->findAll();
         // $recipes = $em->getRepository(Recipe::class)->findWithDurationLowerThan(110);
         // dd($repository->findTotalDuration());
-
-        $recipes = $repository->findWithDurationLowerThan(110);
 
         return $this->render('recipe/index.html.twig', [
             'recipes' => $recipes,
@@ -37,6 +38,51 @@ final class RecipeController extends AbstractController
             'recipe' => $recipe,
         ]);
     }
-}
 
-// https://127.0.0.1:8000/recette/pate-bolognaise-32
+    #[Route('recettes/{id}/edit', name: 'recipe.edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush($recipe);
+            $this->addFlash('success', 'La recette a bien été modifiée.');
+            return $this->redirectToRoute('recipe.index');
+        }
+
+        return $this->render('recipe/edit.html.twig', [
+            'form' => $form,
+            'recipe' => $recipe,
+        ]);
+    }
+
+    #[Route('recettes/new', name: 'recipe.new', )]
+    public function new(Request $request, EntityManagerInterface $em)
+    {
+        $recipe = new Recipe();
+
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($recipe);
+            $em->flush($recipe);
+            $this->addFlash('success', 'La recette a bien été créée.');
+            return $this->redirectToRoute('recipe.index');
+        }
+
+        return $this->render('recipe/new.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('recettes/{id}', name: 'recipe.delete', methods: ['DELETE'])]
+    public function delete(Recipe $recipe, EntityManagerInterface $em)
+    {
+        $em->remove($recipe);
+        $em->flush();
+        $this->addFlash('success', 'La recette a bien été supprimée.');
+        return $this->redirectToRoute('recipe.index');
+    }
+}
