@@ -18,25 +18,23 @@ final class CategoryController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(CategoryRepository $repository): Response
     {
-        $categories = $repository->findAll();
-
         return $this->render('admin/category/index.html.twig', [
-            'categories' => $categories,
+            'categories' => $repository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'new', )]
     public function new(Request $request, EntityManagerInterface $em)
     {
-        $categorie = new Category();
+        $category = new Category();
 
-        $form = $this->createForm(CategoryType::class, $categorie);
+        $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($categorie);
-            $em->flush($categorie);
-            $this->addFlash('success', 'La recette a bien été créée.');
+            $em->persist($category);
+            $em->flush($category);
+            $this->addFlash('success', 'La catégorie a bien été créée.');
             return $this->redirectToRoute('admin.category.index');
         }
 
@@ -64,9 +62,9 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
-    public function delete(Category $recipe, EntityManagerInterface $em)
+    public function delete(Category $category, EntityManagerInterface $em)
     {
-        $em->remove($recipe);
+        $em->remove($category);
         $em->flush();
         $this->addFlash('success', 'La catégorie a bien été supprimée.');
         return $this->redirectToRoute('admin.category.index');

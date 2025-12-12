@@ -3,21 +3,21 @@
 {% block title %}Recettes{% endblock %}
 
 {% block body %}
-    <a class="btn btn-secondary btn-sm" href="{{ path('admin.recipe.new') }}">Créer</a>
+    <a class="btn btn-primary btn-sm" href="{{ path('admin.recipe.new') }}">Ajouter une recette</a>
     <table class="table">
         <thead>
             <tr>
                 <th>Titre</th>
-                <th>Actions</th>
+                <th style='width: 200px'>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for recipe in recipes %}
                 <tr>
-                    <th>
+                    <td>
                         <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">{{ recipe.title}}</a>
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <div class="d-flex gap-1">
                             <a class="btn btn-primary btn-sm" href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">Éditer</a>
                             {# Pour le champ caché ajouter 'http_method_override: true' dans config/packages/framework.yaml #}
@@ -26,7 +26,7 @@
                                 <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                             </form>
                         </div>
-                    </th>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

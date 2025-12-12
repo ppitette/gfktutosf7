@@ -1,23 +1,25 @@
 {% extends 'admin/admin.html.twig' %}
 
-{% block title %}Catégories{% endblock %}
+{% block title 'Catégories' %}
 
 {% block body %}
-    <a class="btn btn-secondary btn-sm" href="{{ path('admin.category.new') }}">Créer</a>
+    <p>
+        <a class="btn btn-primary btn-sm" href="{{ path('admin.category.new') }}">Ajouter une catégorie</a>
+    </p>
     <table class="table">
         <thead>
             <tr>
                 <th>Nom</th>
-                <th>Actions</th>
+                <th style='width: 200px'>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for category in categories %}
                 <tr>
-                    <th>
+                    <td>
                         <a href="{{ path('admin.category.edit', {id: category.id}) }}">{{ category.name }}</a>
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <div class="d-flex gap-1">
                             <a class="btn btn-primary btn-sm" href="{{ path('admin.category.edit', {id: category.id}) }}">Éditer</a>
                             {# Pour le champ caché ajouter 'http_method_override: true' dans config/packages/framework.yaml #}
@@ -26,7 +28,7 @@
                                 <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                             </form>
                         </div>
-                    </th>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
