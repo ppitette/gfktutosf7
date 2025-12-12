@@ -1,12 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/admin.html.twig' %}
 
-{% block title %}Hello RecipeController!{% endblock %}
+{% block title %}Recettes{% endblock %}
 
 {% block body %}
-    <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Modi tempora tempore aut eos quibusdam ipsam debitis maxime veniam doloribus suscipit? Ullam rem cumque animi quia vel modi iusto eveniet qui.
-    </p>
-    <a class="btn btn-secondary btn-sm" href="{{ path('recipe.new') }}">Créer</a>
+    <a class="btn btn-secondary btn-sm" href="{{ path('admin.recipe.new') }}">Créer</a>
     <table class="table">
         <thead>
             <tr>
@@ -18,13 +15,13 @@
             {% for recipe in recipes %}
                 <tr>
                     <th>
-                        <a href="{{ path('recipe.show', {id: recipe.id, slug: recipe.slug}) }}">{{ recipe.title}}</a>
+                        <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">{{ recipe.title}}</a>
                     </th>
                     <th>
                         <div class="d-flex gap-1">
-                            <a class="btn btn-primary btn-sm" href="{{ path('recipe.edit', {id: recipe.id}) }}">Éditer</a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">Éditer</a>
                             {# Pour le champ caché ajouter 'http_method_override: true' dans config/packages/framework.yaml #}
-                            <form action="{{ path('recipe.delete', {id: recipe.id}) }}" method="POST">
+                            <form action="{{ path('admin.recipe.delete', {id: recipe.id}) }}" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                             </form>
