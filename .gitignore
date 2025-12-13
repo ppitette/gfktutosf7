@@ -1,3 +1,6 @@
+# .gitignore
+/bin
+/.php-cs-fixer.dist.php
 
 ###> symfony/framework-bundle ###
 /.env.local
