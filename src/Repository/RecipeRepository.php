@@ -39,6 +39,17 @@ class RecipeRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllWithCategories(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r', 'c')
+            ->leftJoin('r.category', 'c')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
 
     //    /**

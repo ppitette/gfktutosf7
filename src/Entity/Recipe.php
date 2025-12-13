@@ -45,6 +45,11 @@ class Recipe
     #[Assert\LessThan(value: 1440)]
     private ?int $duration = null;
 
+    // cascade: ['persist'] permet de persister une catégorie lorsqu'elle
+    // a été créé 'à la volée' et associée immédiatement à une recette
+    #[ORM\ManyToOne(inversedBy: 'recipes', cascade: ['persist'])]
+    private ?Category $category = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,6 +123,18 @@ class Recipe
     public function setDuration(?int $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

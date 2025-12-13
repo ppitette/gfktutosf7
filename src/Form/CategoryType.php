@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\Recipe;
 use App\Form\FormListenerFactory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,6 +30,15 @@ class CategoryType extends AbstractType
                 'empty_data' => '',
                 'required' => false,
             ])
+            // ->add('recipes', EntityType::class, [
+            //     'class' => Recipe::class,
+            //     'choice_label' => 'title',
+            //     // 'expanded' remplace la liste par des cases à cocher
+            //     // 'expanded' => true,
+            //     'multiple' => true,
+            //     // 'by_reference' sert pour utiliser les méthodes 'add' au lieu des méthodes 'set'
+            //     'by_reference' => false,
+            // ])
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer'
             ])
