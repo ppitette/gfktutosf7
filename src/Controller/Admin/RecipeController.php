@@ -4,20 +4,19 @@ namespace App\Controller\Admin;
 
 use App\Entity\Recipe;
 use App\Form\RecipeType;
-use App\Repository\CategoryRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/recettes', name: 'admin.recipe.')]
 final class RecipeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(RecipeRepository $repository, CategoryRepository $categoryRepository): Response
+    public function index(RecipeRepository $repository): Response
     {
         $recipes = $repository->findAllWithCategories();
         // $recipes = $em->getRepository(Recipe::class)->findWithDurationLowerThan(110);
@@ -51,11 +50,15 @@ final class RecipeController extends AbstractController
     #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em)
     {
+        // Pour récupérer le chemin absole vers l'image il faut utiliser
+        // le Helper fourni avec use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+        // dd($helper->asset($recipe, 'thumbnailFile'));
+
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush($recipe);
+            $em->flush();
             $this->addFlash('success', 'La recette a bien été modifiée.');
             return $this->redirectToRoute('admin.recipe.index');
         }

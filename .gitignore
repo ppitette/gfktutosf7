@@ -1,5 +1,6 @@
 # .gitignore
 /bin
+/devel
 /.php-cs-fixer.dist.php
 
 ###> symfony/framework-bundle ###
