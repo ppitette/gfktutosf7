@@ -228,10 +228,12 @@ before-commit: qa-cs-fixer qa-phpstan qa-security-checker qa-phpcpd qa-lint-twig
 first-install: docker-up composer-install sf-perm sf-dc sf-dmm sf-start sf-open ## First install.
 .PHONY: first-install
 
-start: docker-up sf-start db-backup sf-open ## Start project.
+# start: docker-up sf-start db-backup sf-open ## Start project.
+start: docker-up sf-start ## Start project.
 .PHONY: start
 
-stop: db-backup sf-stop docker-stop ## Stop project.
+# stop: db-backup sf-stop docker-stop ## Stop project.
+stop: sf-stop docker-stop ## Stop project.
 .PHONY: stop
 
 reset-db: ## Reset database.

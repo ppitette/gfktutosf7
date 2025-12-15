@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/categories', name: 'admin.category.')]
+#[IsGranted('ROLE_USER')]
 final class CategoryController extends AbstractController
 {
     #[Route('/', name: 'index')]
