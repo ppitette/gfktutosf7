@@ -18,9 +18,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class RecipeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(RecipeRepository $repository): Response
+    public function index(RecipeRepository $repository, Request $request): Response
     {
-        $recipes = $repository->findAllWithCategories();
+        $page =$request->query->getInt('page', 1);
+        // Avec le Paginator de Doctrine
+        // $limit = 2;
+        $recipes = $repository->paginateRecipes($page);
+        // Avec le Paginator de Doctrine
+        // $recipes = $repository->paginateRecipes($page, $limit);
+        // $maxPage = ceil($recipes->count() / $limit);
+
         // $recipes = $em->getRepository(Recipe::class)->findWithDurationLowerThan(110);
         // dd($repository->findTotalDuration());
 
