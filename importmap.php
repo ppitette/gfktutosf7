@@ -35,4 +35,7 @@ return [
         'version' => '5.3.8',
         'type' => 'css',
     ],
+    'canvas-confetti' => [
+        'version' => '1.9.4',
+    ],
 ];
