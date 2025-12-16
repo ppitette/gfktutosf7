@@ -12,7 +12,7 @@ final class BanWord extends Constraint
         ?array $groups = null,
         mixed $payload = null,
         public string $message = '"{{ banword }}" est un mot interdit.',
-        public $banWords = ['spam', 'viagra']
+        public $banWords = ['spam', 'viagra'],
     ) {
         parent::__construct([], $groups, $payload);
     }

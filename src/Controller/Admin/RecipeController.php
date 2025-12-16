@@ -6,11 +6,11 @@ use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/recettes', name: 'admin.recipe.')]
@@ -20,7 +20,7 @@ final class RecipeController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(RecipeRepository $repository, Request $request): Response
     {
-        $page =$request->query->getInt('page', 1);
+        $page = $request->query->getInt('page', 1);
         // Avec le Paginator de Doctrine
         // $limit = 2;
         $recipes = $repository->paginateRecipes($page);
@@ -46,8 +46,9 @@ final class RecipeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($recipe);
-            $em->flush($recipe);
+            $em->flush();
             $this->addFlash('success', 'La recette a bien été créée.');
+
             return $this->redirectToRoute('admin.recipe.index');
         }
 
@@ -69,6 +70,7 @@ final class RecipeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash('success', 'La recette a bien été modifiée.');
+
             return $this->redirectToRoute('admin.recipe.index');
         }
 
@@ -84,6 +86,7 @@ final class RecipeController extends AbstractController
         $em->remove($recipe);
         $em->flush();
         $this->addFlash('success', 'La recette a bien été supprimée.');
+
         return $this->redirectToRoute('admin.recipe.index');
     }
 }

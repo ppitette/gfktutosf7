@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\RecipeRepository;
 use App\Validator\BanWord;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\RecipeRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
 use Vich\UploaderBundle\Validator\Constraints as VichAssert;
@@ -21,20 +22,24 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipes.index'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5)]
     #[BanWord()]
+    #[Groups(['recipes.index', 'recipes.new'])]
     private string $title = '';
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5)]
     #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Ce slug est invalide')]
+    #[Groups(['recipes.index', 'recipes.new'])]
     private string $slug = '';
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\Length(min: 5)]
+    #[Groups(['recipes.show', 'recipes.new'])]
     private string $content = '';
 
     #[ORM\Column]
@@ -47,11 +52,13 @@ class Recipe
     // #[Assert\NotBlank()]
     #[Assert\Positive()]
     #[Assert\LessThan(value: 1440)]
+    #[Groups(['recipes.index', 'recipes.new'])]
     private ?int $duration = null;
 
     // cascade: ['persist'] permet de persister une catégorie lorsqu'elle
     // a été créé 'à la volée' et associée immédiatement à une recette
     #[ORM\ManyToOne(inversedBy: 'recipes', cascade: ['persist'])]
+    #[Groups(['recipes.show'])]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]

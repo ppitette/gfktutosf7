@@ -4,14 +4,14 @@ namespace App\Controller;
 
 use App\Dto\contactDto;
 use App\Form\ContactType;
-use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class ContactController extends AbstractController
 {
@@ -24,7 +24,6 @@ final class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $mail = new TemplatedEmail()
                 ->to($data->service)
                 ->from(new Address($data->email, $data->name))
@@ -36,9 +35,10 @@ final class ContactController extends AbstractController
             try {
                 $mailer->send($mail);
                 $this->addFlash('success', 'Le message a bien été envoyé.');
+
                 return $this->redirectToRoute('contact');
             } catch (TransportExceptionInterface $e) {
-                //dd($e);
+                // dd($e);
                 $this->addFlash('danger', 'Erreur dans l\'envoi du message');
             }
         }

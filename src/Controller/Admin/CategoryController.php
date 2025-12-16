@@ -6,12 +6,12 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/categories', name: 'admin.category.')]
 #[IsGranted('ROLE_USER')]
@@ -37,8 +37,9 @@ final class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($category);
-            $em->flush($category);
+            $em->flush();
             $this->addFlash('success', 'La catégorie a bien été créée.');
+
             return $this->redirectToRoute('admin.category.index');
         }
 
@@ -54,8 +55,9 @@ final class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush($categorie);
+            $em->flush();
             $this->addFlash('success', 'La catégorie a bien été modifiée.');
+
             return $this->redirectToRoute('admin.category.index');
         }
 
@@ -71,6 +73,7 @@ final class CategoryController extends AbstractController
         $em->remove($category);
         $em->flush();
         $this->addFlash('success', 'La catégorie a bien été supprimée.');
+
         return $this->redirectToRoute('admin.category.index');
     }
 }
