@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/categories', name: 'admin.category.')]
@@ -19,8 +20,10 @@ final class CategoryController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(CategoryRepository $repository): Response
     {
+        // dd($repository->findAllWithCount());
+
         return $this->render('admin/category/index.html.twig', [
-            'categories' => $repository->findAll(),
+            'categories' => $repository->findAllWithCount(),
         ]);
     }
 

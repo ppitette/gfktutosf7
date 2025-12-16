@@ -16,6 +16,41 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * @return CategoryWithCountDto()
+     */
+    public function findAllWithCount(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('NEW App\\Dto\\CategoryWithCountDto(c.id, c.name, COUNT(c.id))')
+            ->leftJoin('c.recipes', 'r')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        // même requête en DQL
+        // $this->getEntityManager()->createQuery(
+        //     <<<DQL
+        //         SELECT NEW App\\Dto\\CategoryWithCountDto(c.id, c.name, COUNT(c.id))
+        //         FROM App\Entity\Category c
+        //         LEFT JOIN c.recipes r
+        //         GROUP BY c.i
+        //     DQL
+        // )->getResult();
+    }
+
+    // public function findAllWithCount(): array
+    // {
+    //     return $this->createQueryBuilder('c')
+    //         ->select('c as category', 'COUNT(c.id) as total')
+    //         ->leftJoin('c.recipes', 'r')
+    //         ->groupBy('c.id')
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
