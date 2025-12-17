@@ -1,10 +1,10 @@
 // import './stimulus_bootstrap.js';
 
-import CanvasConfetti from 'canvas-confetti'
+// import CanvasConfetti from 'canvas-confetti'
 
-document.body.addEventListener('click', () => {
-    CanvasConfetti()
-})
+// document.body.addEventListener('click', () => {
+//     CanvasConfetti()
+// })
 
 /*
  * Welcome to your app's main JavaScript file!

@@ -53,7 +53,7 @@ final class RecipeController extends AbstractController
     public function new(
         Request $request,
         // Il est dangereux de mapper des données qui viennent de l'extérieur sur un objet
-        // Il est conseiller de mapper sur un objet qui représente la requête (NewRecipeDto et/ou UpdateRecipeDto)
+        // Il est conseillé de mapper sur un objet qui représente la requête (NewRecipeDto et/ou UpdateRecipeDto)
         // avec les règles de validation propres puis de faire l'hydratation dans le controlleur (seters)
         #[MapRequestPayload(
             serializationContext: [
