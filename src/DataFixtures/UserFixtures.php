@@ -1,0 +1,47 @@
+<?php
+
+namespace App\DataFixtures;
+
+use App\Entity\User;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+class UserFixtures extends Fixture
+{
+    private const ADMIN = 'ADMIN_USER';
+
+    public function __construct(
+        private readonly UserPasswordHasherInterface $hasher,
+    ) {
+    }
+
+    public function load(ObjectManager $manager): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_ADMIN'])
+            ->setEmail('ppitette@gmail.com')
+            ->setUsername('admin')
+            ->setIsVerified(true)
+            ->setPassword($this->hasher->hashPassword($user, 'password'))
+            ->setApiToken('super_token');
+        $this->addReference(self::ADMIN, $user);
+
+        $manager->persist($user);
+
+        for ($i = 1; $i <= 10; $i++) {
+            $user = new User()
+                ->setRoles([""])
+                ->setEmail("user{$i}@tuto.org")
+                ->setUsername("user{$i}")
+                ->setIsVerified(true)
+                ->setPassword($this->hasher->hashPassword($user, 'password'))
+                ->setApiToken("user{$i}");
+            $this->addReference('USER' . $i, $user);
+
+            $manager->persist($user);
+        }
+
+        $manager->flush();
+    }
+}
