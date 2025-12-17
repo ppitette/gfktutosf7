@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
@@ -29,15 +29,15 @@ class UserFixtures extends Fixture
 
         $manager->persist($user);
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 10; ++$i) {
             $user = new User()
-                ->setRoles([""])
+                ->setRoles([''])
                 ->setEmail("user{$i}@tuto.org")
                 ->setUsername("user{$i}")
                 ->setIsVerified(true)
                 ->setPassword($this->hasher->hashPassword($user, 'password'))
                 ->setApiToken("user{$i}");
-            $this->addReference('USER' . $i, $user);
+            $this->addReference('USER'.$i, $user);
 
             $manager->persist($user);
         }

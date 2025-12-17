@@ -5,10 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Recipe;
 use App\Entity\User;
-use Faker\Factory;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use FakerRestaurant\Provider\fr_FR\Restaurant;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -37,7 +37,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference($c, $category);
         }
 
-        for($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 10; ++$i) {
             $title = $faker->foodName();
             $recipe = new Recipe()
                 ->setTitle($title)
@@ -47,7 +47,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
                 ->setContent($faker->paragraphs(10, true))
                 ->setDuration($faker->numberBetween(50, 80))
                 ->setCategory($this->getReference($faker->randomElement($categories), Category::class))
-                ->setUser($this->getReference('USER' . $faker->numberBetween(1, 10), User::class))
+                ->setUser($this->getReference('USER'.$faker->numberBetween(1, 10), User::class))
             ;
             $manager->persist($recipe);
         }
@@ -57,6 +57,6 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return[UserFixtures::class];
+        return [UserFixtures::class];
     }
 }

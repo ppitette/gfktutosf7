@@ -2,10 +2,10 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\User;
 use App\Entity\Recipe;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 final class RecipeVoter extends Voter
 {
@@ -17,10 +17,10 @@ final class RecipeVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::CREATE, self::LIST, self::LIST_ALL]) ||
-        (
+        return in_array($attribute, [self::CREATE, self::LIST, self::LIST_ALL])
+        || (
             in_array($attribute, [self::EDIT, self::VIEW])
-            && $subject instanceof \App\Entity\Recipe
+            && $subject instanceof Recipe
         );
     }
 

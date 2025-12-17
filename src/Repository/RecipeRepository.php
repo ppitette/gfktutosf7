@@ -62,7 +62,7 @@ class RecipeRepository extends ServiceEntityRepository
         if ($userId) {
             $builder = $builder->andWhere('r.user = :user')
                 ->setParameter('user', $userId);
-        };
+        }
 
         return $this->paginator->paginate(
             $builder,
