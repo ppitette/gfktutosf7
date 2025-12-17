@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+use App\Security\Voter\RecipeVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,16 +16,19 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/recettes', name: 'admin.recipe.')]
-#[IsGranted('ROLE_USER')]
+// #[IsGranted('ROLE_USER')]
 final class RecipeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(RecipeRepository $repository, Request $request): Response
+    #[IsGranted(RecipeVoter::LIST)]
+    public function index(RecipeRepository $repository, Request $request, Security $security): Response
     {
         $page = $request->query->getInt('page', 1);
+        $userId = $security->getUser()->getId();
+        $canListAll = $security->isGranted(RecipeVoter::LIST_ALL);
         // Avec le Paginator de Doctrine
         // $limit = 2;
-        $recipes = $repository->paginateRecipes($page);
+        $recipes = $repository->paginateRecipes($page, $canListAll ? null : $userId);
         // Avec le Paginator de Doctrine
         // $recipes = $repository->paginateRecipes($page, $limit);
         // $maxPage = ceil($recipes->count() / $limit);
@@ -37,6 +42,7 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('/new', name: 'new', )]
+    #[IsGranted(RecipeVoter::CREATE)]
     public function new(Request $request, EntityManagerInterface $em)
     {
         $recipe = new Recipe();
@@ -58,6 +64,7 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted(RecipeVoter::EDIT, subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em)
     {
         // Pour récupérer le chemin absole vers l'image il faut utiliser
