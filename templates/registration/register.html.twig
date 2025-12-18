@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme registrationForm _self %}
+
+{%- block toggle_password_widget -%}
+    <div class="{{ toggle_container_classes|join(' ') }}">{{ block('password_widget') }}</div>
+{%- endblock toggle_password_widget -%}
+
 {% block title %}Register{% endblock %}
 
 {% block body %}

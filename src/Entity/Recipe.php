@@ -65,7 +65,7 @@ class Recipe
     private ?string $thumbnail = null;
 
     #[Vich\UploadableField(mapping: 'recipes', fileNameProperty: 'thumbnail')]
-    #[VichAssert\FileRequired(target: 'image')]
+    // #[VichAssert\FileRequired(target: 'image')]
     private ?File $thumbnailFile = null;
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
