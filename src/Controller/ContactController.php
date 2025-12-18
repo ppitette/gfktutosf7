@@ -3,20 +3,20 @@
 namespace App\Controller;
 
 use App\Dto\contactDto;
+use App\Event\ContactRequestEvent;
 use App\Form\ContactType;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'contact')]
-    public function contact(Request $request, MailerInterface $mailer): Response
+    public function contact(Request $request, MailerInterface $mailer, EventDispatcherInterface $dispatcher): Response
     {
         $data = new contactDto();
 
@@ -24,16 +24,9 @@ final class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $mail = new TemplatedEmail()
-                ->to($data->service)
-                ->from(new Address($data->email, $data->name))
-                ->subject('Demande de contact')
-                ->htmlTemplate('emails/contact.html.twig')
-                ->context(['data' => $data])
-            ;
-
             try {
-                $mailer->send($mail);
+                $dispatcher->dispatch(new ContactRequestEvent($data));
+
                 $this->addFlash('success', 'Le message a bien été envoyé.');
 
                 return $this->redirectToRoute('contact');
