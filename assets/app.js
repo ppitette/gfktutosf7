@@ -1,4 +1,4 @@
-// import './stimulus_bootstrap.js';
+import './stimulus_bootstrap.js';
 
 // import CanvasConfetti from 'canvas-confetti'
 
