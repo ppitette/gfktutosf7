@@ -1,7 +1,8 @@
 # config/packages/twig.yaml
 twig:
     file_name_pattern: '*.twig'
-    form_themes: ['bootstrap_5_layout.html.twig']
+    # form_themes: ['bootstrap_5_layout.html.twig']
+    form_themes: ['form/layout.html.twig']
 
 when@test:
     twig:

@@ -1,13 +1,42 @@
-
 services:
-
-###> symfony/mailer ###
-  mailer:
-    image: axllent/mailpit:latest
-    ports:
-      - "1025"
-      - "8025"
+###> doctrine/doctrine-bundle ###
+  database:
+    image: mariadb:${DB_VERSION:-11.8.5}
+    container_name: tuto_database
     environment:
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-###< symfony/mailer ###
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-password}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-gfktutosf7}
+      MARIADB_USER: ${MARIADB_USER:-dbadmin}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-password}
+      MARIADB_VERSION: ${MARIADB_VERSION:-11.8.5-MariaDB-ubu2404}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - database_data:/var/lib/mysql:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: tuto_dbadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: password
+      UPLOAD_LIMIT: 20M
+    depends_on:
+      - database
+    ports:
+      - 8100:80
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###

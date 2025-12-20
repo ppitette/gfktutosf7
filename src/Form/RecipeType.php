@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -52,6 +53,20 @@ class RecipeType extends AbstractType
                 'empty_data' => '',
             ])
             ->add('duration')
+            ->add('quantities', CollectionType::class, [
+                'entry_type' => QuantityType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'entry_options' => [
+                    'label' => false,
+                ],
+                'attr' => [
+                    // 'data-controller' =>'form-collection',
+                    'data-form-collection-add-label-value' => 'Ajouter un ingrédient',
+                    'data-form-collection-delete-label-value' => 'Supprimer un ingrédient',
+                ],
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer',
             ])
