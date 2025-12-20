@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Recipe;
 use App\Form\RecipeType;
+use App\Message\RecipePdfMessage;
 use App\Repository\RecipeRepository;
 use App\Security\Voter\RecipeVoter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -66,7 +68,7 @@ final class RecipeController extends AbstractController
 
     #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     #[IsGranted(RecipeVoter::EDIT, subject: 'recipe')]
-    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em)
+    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em, MessageBusInterface $messageBus)
     {
         // Pour récupérer le chemin absole vers l'image il faut utiliser
         // le Helper fourni avec use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -77,6 +79,7 @@ final class RecipeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+            $messageBus->dispatch(new RecipePdfMessage($recipe->getId()));
             $this->addFlash('success', 'La recette a bien été modifiée.');
 
             return $this->redirectToRoute('admin.recipe.index');
@@ -84,6 +87,16 @@ final class RecipeController extends AbstractController
 
         return $this->render('admin/recipe/edit.html.twig', [
             'form' => $form,
+            'recipe' => $recipe,
+        ]);
+    }
+
+    #[Route('/show/{id}', name: 'show', methods: ['GET'], requirements: ['id' => Requirement::DIGITS])]
+    public function show(Recipe $recipe): Response
+    {
+        // dd($recipe);
+
+        return $this->render('pdf/recipe.pdf.html.twig', [
             'recipe' => $recipe,
         ]);
     }

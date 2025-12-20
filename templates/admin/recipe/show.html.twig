@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{ recipe.title }}</title>
+    </head>
+    <body>
+        <h1>{{ recipe.title }}</h1>
+        <p>
+            Créé par {{ recipe.user.username }}
+            le {{ recipe.createdAt |format_datetime('short', 'none', locale: 'fr') }}
+            et modifiée le {{ recipe.updatedAt |format_datetime('short', 'none', locale: 'fr') }}
+        </p>
+
+        <img src="{{ vich_uploader_asset(recipe, 'thumbnailFile') }}" alt="">
+
+        <ul>
+            {% for quantity in recipe.quantities %}
+                <li>{{ quantity.quantity }} {{ quantity.unit }} {{ quantity.ingredient.name }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>{{ recipe.content }}</p>
+    </body>
+</html>
