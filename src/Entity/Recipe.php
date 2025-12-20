@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeRepository;
 use App\Validator\BanWord;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\RecipeRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Valid;
 use Vich\UploaderBundle\Mapping\Attribute as Vich;
-use Vich\UploaderBundle\Validator\Constraints as VichAssert;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+// use Vich\UploaderBundle\Validator\Constraints as VichAssert;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[UniqueEntity('title')]
@@ -32,7 +32,8 @@ class Recipe
     #[Assert\Length(min: 5)]
     #[BanWord()]
     #[Groups(['recipes.index', 'recipes.new'])]
-    private string $title = '';
+    #[Gedmo\Translatable]
+    private ?string $title = '';
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5)]
@@ -93,7 +94,7 @@ class Recipe
 
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->title ?? '';
     }
 
     public function setTitle(string $title): static

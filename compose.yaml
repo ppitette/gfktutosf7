@@ -36,11 +36,11 @@ services:
     ports:
       - 8100:80
 
-  gotenberg:
-    image: gotenberg/gotenberg:latest
-    container_name: tuto_gotenberg
-    ports:
-      - 3000:3000
+  # gotenberg:
+  #   image: gotenberg/gotenberg:latest
+  #   container_name: tuto_gotenberg
+  #   ports:
+  #     - 3000:3000
 
 volumes:
 ###> doctrine/doctrine-bundle ###

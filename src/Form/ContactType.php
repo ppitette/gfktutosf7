@@ -16,15 +16,21 @@ class ContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // Pour extraire les traductions à faire , passer la commande :
+        // symfony console translation:extract --dump fr (dry-run)
+        // symfony console translation:extract --force fr --format=yaml
         $builder
             ->add('name', TextType::class, [
                 'empty_data' => '',
+                'label' => t('contactForm.name')
             ])
             ->add('email', EmailType::class, [
                 'empty_data' => '',
+                'label' => t('contactForm.email')
             ])
             ->add('message', TextareaType::class, [
                 'empty_data' => '',
+                'label' => t('contactForm.message')
             ])
             ->add('service', ChoiceType::class, [
                 'choices' => [
@@ -32,9 +38,10 @@ class ContactType extends AbstractType
                     'Support' => 'contact@pitette.fr',
                     'Commercial' => 'contact@pitette.fr',
                 ],
+                'label' => t('contactForm.service')
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Envoyer',
+                'label' => t('contactForm.submit'),
             ])
         ;
     }

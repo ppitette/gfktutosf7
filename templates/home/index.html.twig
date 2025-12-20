@@ -3,6 +3,8 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    {# {{ dump(app)}} #}
-    Home
+    <h1>{{ 'welcome' | trans({'name': 'Machin'}) }}</h1>
+    <p>
+        {{ 'home_recipe_count' | trans({count: 100}) }}
+    </p>
 {% endblock %}

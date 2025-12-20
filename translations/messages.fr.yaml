@@ -1,0 +1,12 @@
+welcome: Bonjour name
+
+vich_uploader:
+  form_label.delete_confirm: 'Supprimer ?'
+  vich_uploader.link.download: Télécharger
+
+contactForm:
+  name: Prénom
+  email: Courriel
+  service: Service
+  message: Message
+  submit: Envoyer le message
