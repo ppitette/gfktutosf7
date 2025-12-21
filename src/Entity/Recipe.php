@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Validator\BanWord;
 use Doctrine\DBAL\Types\Types;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\Collection;
@@ -32,7 +31,6 @@ class Recipe
     #[Assert\Length(min: 5)]
     #[BanWord()]
     #[Groups(['recipes.index', 'recipes.new'])]
-    #[Gedmo\Translatable]
     private ?string $title = '';
 
     #[ORM\Column(length: 255)]

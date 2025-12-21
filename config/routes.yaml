@@ -8,7 +8,4 @@
 #   bin/console debug:router
 
 controllers:
-    prefix: "{_locale}"
-    requirements:
-        _locale: fr|en|de
     resource: routing.controllers

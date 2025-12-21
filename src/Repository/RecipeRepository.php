@@ -8,7 +8,6 @@ use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -67,10 +66,7 @@ class RecipeRepository extends ServiceEntityRepository
         }
 
         return $this->paginator->paginate(
-            $builder->getQuery()->setHint(
-                Query::HINT_CUSTOM_OUTPUT_WALKER,
-                TranslationWalker::class
-            ),
+            $builder,
             $page,
             10,
             [

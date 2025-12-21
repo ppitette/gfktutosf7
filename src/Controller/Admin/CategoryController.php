@@ -28,7 +28,7 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/new', name: 'new', )]
-    public function new(Request $request, EntityManagerInterface $em)
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $category = new Category();
 
@@ -49,7 +49,7 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
-    public function edit(Request $request, Category $categorie, EntityManagerInterface $em)
+    public function edit(Request $request, Category $categorie, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(CategoryType::class, $categorie);
         $form->handleRequest($request);
@@ -67,8 +67,8 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
-    public function delete(Category $category, EntityManagerInterface $em)
+    #[Route('/{id}', name: 'delete', requirements: ['id' => Requirement::DIGITS], methods: ['DELETE'])]
+    public function delete(Category $category, EntityManagerInterface $em): Response
     {
         $em->remove($category);
         $em->flush();

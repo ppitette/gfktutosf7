@@ -1,12 +1,13 @@
-welcome: Bonjour name
-
 vich_uploader:
-  form_label.delete_confirm: 'Supprimer ?'
-  vich_uploader.link.download: Télécharger
-
+    form_label:
+        delete_confirm: 'Supprimer ?'
+    link:
+        download: Télécharger
+welcome: Bienvenue
+home_recipe_count: 'Nombre de recettes'
 contactForm:
-  name: Prénom
-  email: Courriel
-  service: Service
-  message: Message
-  submit: Envoyer le message
+    name: Prénom
+    email: Courriel
+    service: Service
+    message: Message
+    submit: Envoyer le message

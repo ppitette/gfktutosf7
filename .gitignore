@@ -1,5 +1,5 @@
 # .gitignore
-/bin
+/.idea
 /devel
 /.php-cs-fixer.dist.php
 /.php-cs-fixer.cache

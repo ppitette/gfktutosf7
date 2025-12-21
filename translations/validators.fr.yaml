@@ -172,7 +172,7 @@ Error: Erreur
 'Ce slug est invalide': '__Ce slug est invalide'
 'Il y a déjà un compte avec cet username': '__Il y a déjà un compte avec cet username'
 'Il y a déjà un compte avec cet email': '__Il y a déjà un compte avec cet email'
-"l'email {{ value }} n'est pas valide.": "__l'email {{ value }} n'est pas valide."
 'You should agree to our terms.': '__You should agree to our terms.'
 'Please enter a password': '__Please enter a password'
 'Your password should be at least {{ limit }} characters': '__Your password should be at least {{ limit }} characters'
+"l'email {{ value }} n'est pas valide.": "__l'email {{ value }} n'est pas valide."

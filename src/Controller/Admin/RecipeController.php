@@ -46,7 +46,7 @@ final class RecipeController extends AbstractController
 
     #[Route('/new', name: 'new', )]
     #[IsGranted(RecipeVoter::CREATE)]
-    public function new(Request $request, EntityManagerInterface $em)
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $recipe = new Recipe();
 
@@ -68,9 +68,9 @@ final class RecipeController extends AbstractController
 
     #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     #[IsGranted(RecipeVoter::EDIT, subject: 'recipe')]
-    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em, MessageBusInterface $messageBus)
+    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em, MessageBusInterface $messageBus): Response
     {
-        // Pour récupérer le chemin absole vers l'image il faut utiliser
+        // Pour récupérer le chemin absolu vers l'image il faut utiliser
         // le Helper fourni avec use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
         // dd($helper->asset($recipe, 'thumbnailFile'));
 
@@ -102,7 +102,7 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
-    public function delete(Request $request, Recipe $recipe, EntityManagerInterface $em)
+    public function delete(Request $request, Recipe $recipe, EntityManagerInterface $em): Response
     {
         $recipeId = $recipe->getId();
         $message = 'La recette a bien été supprimée.';
